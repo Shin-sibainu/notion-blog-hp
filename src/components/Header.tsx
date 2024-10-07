@@ -9,7 +9,7 @@ const Header = () => {
         <div className="sm:flex items-center space-x-7 hidden">
           <Link
             href={"/"}
-            className="font-bold text-2xl flex items-center gap-2"
+            className="font-bold text-xl flex items-center gap-2"
           >
             <Image
               src={"/notionpress-logo-mod.png"}
