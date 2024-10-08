@@ -1,5 +1,6 @@
 import Feature from "@/components/Feature";
 import Hero from "@/components/Hero";
+import Pricing from "@/components/Pricing";
 import Templates from "@/components/Templates";
 
 //https://tailwindui.com/templates#browse
@@ -11,8 +12,10 @@ export default function Home() {
       <Hero />
       <Feature />
       <Templates />
-      {/* price */}
+      <Pricing />
       {/* contact(select template and contact) */}
+      {/* call to action */}
+      {/* <CallToAction /> */}
     </div>
   );
 }

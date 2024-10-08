@@ -1,14 +1,16 @@
 const SectionContainer = ({
   children,
+  id,
   title,
   description,
 }: {
   children: React.ReactNode;
+  id: string;
   title?: string;
   description?: string;
 }) => {
   return (
-    <section className="py-10 sm:py-20 max-w-5xl mx-auto">
+    <section id={id} className="py-10 sm:py-20 max-w-5xl mx-auto">
       <div className="text-center space-y-4">
         <h3 className="text-2xl md:text-4xl font-bold">{title}</h3>
 

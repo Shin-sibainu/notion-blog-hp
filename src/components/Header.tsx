@@ -22,19 +22,25 @@ const Header = () => {
         </div>
         <nav className="flex items-center gap-4">
           <Link
-            href={""}
+            href={"#feature"}
             className="hover:text-muted-foreground/70 sm:text-sm pt-1"
           >
-            　特徴
+            特徴
           </Link>
           <Link
-            href={""}
+            href={"#templates"}
             className="hover:text-muted-foreground/70 sm:text-sm pt-1"
           >
             テンプレート
           </Link>
           <Link
-            href={""}
+            href={"#price"}
+            className="hover:text-muted-foreground/70 sm:text-sm pt-1"
+          >
+            料金
+          </Link>
+          <Link
+            href={"#price"}
             className="hover:text-muted-foreground/70 sm:text-sm pt-1"
           >
             ブログの始め方

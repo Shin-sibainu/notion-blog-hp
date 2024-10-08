@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -16,12 +17,21 @@ const Hero = () => {
         </span>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">
-          <Button size={"lg"} className="w-full sm:w-auto">
-            はじめる
-          </Button>
-          <Button size={"lg"} variant={"outline"} className="w-full sm:w-auto">
-            テンプレート
-          </Button>
+          <Link href={"/create-notion-blog"}>
+            <Button size={"lg"} className="w-full sm:w-auto">
+              はじめる
+            </Button>
+          </Link>
+
+          <Link href={"#templates"}>
+            <Button
+              size={"lg"}
+              variant={"outline"}
+              className="w-full sm:w-auto"
+            >
+              テンプレート
+            </Button>
+          </Link>
         </div>
 
         <div className="shadow-xl shadow-slate-300 mt-8">

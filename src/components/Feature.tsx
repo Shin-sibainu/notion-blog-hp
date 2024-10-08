@@ -4,6 +4,7 @@ import SectionContainer from "./layouts/SectionContainer";
 const Feature = () => {
   return (
     <SectionContainer
+      id="feature"
       title="慣れ親しんだNotionで、魅力的なブログを"
       description="Notionユーザーなら、すぐに始められる。多彩なデザインテンプレートで、あなたの個性を表現。日々の気づきを、価値ある発信へと変えていきましょう。"
     >
