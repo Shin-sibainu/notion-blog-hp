@@ -4,7 +4,16 @@ import SectionContainer from "./layouts/SectionContainer";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 
-const templateData = [
+export interface TemplateOption {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  features: string[];
+  href: string;
+}
+
+export const templateData = [
   {
     id: 1,
     name: "Sleek Slate",
@@ -16,23 +25,23 @@ const templateData = [
       "読みやすいタイポグラフィ",
       "サムネイル画像",
     ],
-    href: "sleek-slate",
+    href: "https://three-insights-blog.vercel.app",
   },
   {
     id: 2,
     name: "Super Simple",
-    description: "読みやすさを重視した、時代を超えた魅力のあるデザイン。",
+    description: "読みやすさを重視した、時代と人を選ばない魅力のあるデザイン。",
     image: "/notion-press-template-sleek-slate.png",
     features: [
       "シンプルなレイアウト",
       "読みやすいタイポグラフィ",
       "余計な機能はなし",
     ],
-    href: "super-simple",
+    href: "https://three-insights-blog.vercel.app",
   },
   {
     id: 3,
-    name: "クリエイティブポートフォリオ",
+    name: "Creative Portfolio",
     description:
       "あなたの作品を美しく展示。クリエイター向けの理想的なテンプレート。",
     image: "/notion-press-template-sleek-slate.png",
@@ -41,10 +50,11 @@ const templateData = [
       "読みやすいタイポグラフィ",
       "カスタマイズ性が高い",
     ],
+    href: "https://three-insights-blog.vercel.app",
   },
   {
     id: 4,
-    name: "ビジネスプロフェッショナル",
+    name: "Business Pro",
     description: "信頼感と専門性を演出。ビジネス向けの洗練されたデザイン。",
     image: "/notion-press-template-sleek-slate.png",
     features: [
@@ -52,6 +62,7 @@ const templateData = [
       "読みやすいタイポグラフィ",
       "カスタマイズ性が高い",
     ],
+    href: "https://three-insights-blog.vercel.app",
   },
 ];
 

@@ -1,3 +1,4 @@
+import CallToAction from "@/components/CallToAction";
 import Feature from "@/components/Feature";
 import Hero from "@/components/Hero";
 import Pricing from "@/components/Pricing";
@@ -13,9 +14,7 @@ export default function Home() {
       <Feature />
       <Templates />
       <Pricing />
-      {/* contact(select template and contact) */}
-      {/* call to action */}
-      {/* <CallToAction /> */}
+      <CallToAction />
     </div>
   );
 }

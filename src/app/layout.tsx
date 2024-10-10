@@ -1,20 +1,8 @@
 import type { Metadata } from "next";
-// import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import { Noto_Sans_JP } from "next/font/google";
 import Footer from "@/components/Footer";
-
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
 
 const notoSansJP = Noto_Sans_JP({
   weight: ["400", "700"],
@@ -33,11 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" className="overflow-y-scroll">
       <body className={`${notoSansJP.className} antialiased bg-gradient`}>
-        <div className="container mx-auto w-full">
-          <Header />
-          {children}
+        <div className="flex flex-col min-h-screen">
+          <div className="flex justify-center">
+            <Header />
+          </div>
+          <main className="flex-grow">{children}</main>
           <Footer />
         </div>
       </body>

@@ -6,14 +6,15 @@ import Link from "next/link";
 const Hero = () => {
   return (
     <div className="py-6 sm:pt-12 pb-10 sm:pb-20">
-      <div className="text-center max-w-5xl mx-auto">
-        <h2 className="lg:text-6xl md:text-5xl text-4xl font-bold leading-[1.1]">
+      <div className="text-center max-w-6xl mx-auto">
+        <h2 className="lg:text-6xl md:text-5xl text-4xl font-bold leading-[1.1] tracking-tight">
           Notionで
-          <span className="text-blue-600">ブログ</span>
-          をスタートしよう
+          <span className="text-blue-600">ブログ</span>を
+          <span className="text-blue-600">簡単に</span>
+          スタートしよう
         </h2>
         <span className="mt-4 inline-block text-gray-600 font-bold md:text-xl text-sm">
-          テンプレートを選択するだけで無料で簡単にブログ運用をスタートできます。
+          テンプレートを選択するだけ。すぐにブログ運用をスタートできます。
         </span>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">

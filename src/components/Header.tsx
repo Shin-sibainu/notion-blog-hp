@@ -34,7 +34,7 @@ const Header = () => {
             テンプレート
           </Link>
           <Link
-            href={"#price"}
+            href={"#pricing"}
             className="hover:text-muted-foreground/70 sm:text-sm pt-1"
           >
             料金
