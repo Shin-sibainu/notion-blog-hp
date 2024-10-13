@@ -6,16 +6,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log(body);
 
-    const { blogName, email, template, notionToken, notionId } = body;
+    const { blogName, domain, email, template, notionToken, notionId } = body;
 
     const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: "NotionPress | Notionで簡単ブログ開発 <onboarding@resend.dev>",
+      replyTo: ["shincodeinc@gmail.com"],
       to: ["shincodeinc@gmail.com"],
+      cc: [email], //機能していない。
       subject: "Notionブログ申込み確認",
       react: EmailTemplate({
         blogName,
+        domain,
         email,
         template,
         notionToken,

@@ -13,14 +13,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 import Image from "next/image";
 import { templateData } from "@/components/Templates";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Client } from "@notionhq/client";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   blogName: string;
+  domain: string;
   email: string;
   template: string;
   notionToken: string;
@@ -28,27 +41,45 @@ interface FormData {
 }
 
 const CreateNotionBlogPage: React.FC = () => {
-  const [step, setStep] = useState(1);
   const totalSteps = 3;
+
+  const [step, setStep] = useState(1);
+  const router = useRouter();
+
   const [formData, setFormData] = useState<FormData>({
     blogName: "ShinCode_Blog",
+    domain: "shincode_blog",
     email: "test@gmail.com",
     template: "Sleek Slate",
-    notionToken: "",
-    notionId: "",
+    notionToken: "secret_uc7RDVzbGbIxkyStI2swlJejlAUsnQrPdEBz5hnYdfd",
+    notionId: "127ef6b3de6b408880c046925f5917c6",
+    // 127ef6b3de6b408880c046925f5917c6
   });
+
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [touchedFields, setTouchedFields] = useState<Set<keyof FormData>>(
     new Set()
   );
+
   const [isNotionDataCheckLoading, setIsNotionDataCheckLoading] =
     useState(false);
+  const [sendingEmailLoading, setSendingEmailLoading] = useState(false);
+
+  const [isOkShowModal, setIsOkShowModal] = useState(false);
+
+  const [availableNotionTokenMessage, setAvailableNotionTokenMessage] =
+    useState("");
+  const [availableNotionIdMessage, setAvailableNotionIdMessage] = useState("");
 
   const validateField = (name: keyof FormData, value: string) => {
     let error = "";
     switch (name) {
       case "blogName":
         if (value.trim().length === 0) error = "ブログ名は必須です";
+        break;
+      case "domain":
+        if (value.trim().length === 0)
+          error = "有効なドメイン名を入力してください";
         break;
       case "email":
         if (!/\S+@\S+\.\S+/.test(value))
@@ -68,12 +99,61 @@ const CreateNotionBlogPage: React.FC = () => {
   };
 
   const validateNotionToken = async (notionToken: string) => {
-    const notion = new Client({ auth: notionToken });
+    if (notionToken === "") {
+      return;
+    }
 
     try {
-      // 実際にAPIを呼び出す
-      await notion.users.list({});
-      return null;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/notion/validateNotionTokenCredentials`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ notionToken }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.isValid) {
+        return data.message; //エラー文
+      } else {
+        setAvailableNotionTokenMessage(data.message);
+        return null; //エラーなし。
+      }
+    } catch (error) {
+      console.error("エラー:", error);
+      return "このNotionTokenは利用できません。もう一度確認してください。";
+    }
+  };
+
+  const validateNotionId = async (notionToken: string, notionId: string) => {
+    if (notionId === "") {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/notion/validateNotionIdCredentials`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ notionToken, notionId }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.isValid) {
+        return data.message; //エラー文
+      } else {
+        setAvailableNotionIdMessage(data.message);
+        return null; //エラーなし。
+      }
     } catch (error) {
       console.error("エラー:", error);
       return "このNotionTokenは利用できません。もう一度確認してください。";
@@ -84,6 +164,9 @@ const CreateNotionBlogPage: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setTouchedFields((prev) => new Set(prev).add(name as keyof FormData));
+
+    // setAvailableNotionTokenMessage("");
+    // setAvailableNotionIdMessage("");
 
     // バリデーションを即時実行
     const error = validateField(name as keyof FormData, value);
@@ -103,7 +186,7 @@ const CreateNotionBlogPage: React.FC = () => {
     let fieldsToValidate: (keyof FormData)[] = [];
     switch (step) {
       case 1:
-        fieldsToValidate = ["blogName", "email"];
+        fieldsToValidate = ["blogName", "domain", "email"];
         break;
       case 2:
         fieldsToValidate = ["template"];
@@ -127,8 +210,9 @@ const CreateNotionBlogPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleConfirm = async () => {
+    setAvailableNotionIdMessage("");
+    setAvailableNotionTokenMessage("");
 
     //["blogName", "email", "template", "notionToken", "notionId"]
     const allFields = Object.keys(formData) as Array<keyof FormData>;
@@ -138,42 +222,69 @@ const CreateNotionBlogPage: React.FC = () => {
       if (error) newErrors[field] = error;
     });
 
-    //newErrors[filed] = errorでエラーの追加可能。
-    setErrors(newErrors);
-
-    //notionToken and notionIdが有効かどうかの確認バリデーション
-    const error = await validateNotionToken(formData["notionToken"]);
-    console.log(error);
-    if (error) newErrors["notionToken"] = error;
-
     // すべてのフィールドをtouchedとしてマーク
     setTouchedFields(new Set(allFields));
 
+    setIsNotionDataCheckLoading(true);
+    //notionTokenが有効かどうかの確認バリデーション
+    const notionTokenError = await validateNotionToken(formData["notionToken"]);
+    if (notionTokenError) newErrors["notionToken"] = notionTokenError;
+
+    //notionIdが有効かどうかの確認バリデーション
+    const notionIdError = await validateNotionId(
+      formData["notionToken"],
+      formData["notionId"]
+    );
+    if (notionIdError) newErrors["notionId"] = notionIdError;
+
+    setErrors(newErrors);
+
+    setIsNotionDataCheckLoading(false);
+
     if (Object.keys(newErrors).length === 0) {
-      const { blogName, email, template, notionToken, notionId } = formData;
-      //メール送信
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/send`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              blogName,
-              email,
-              template,
-              notionToken,
-              notionId,
-            }),
-          }
-        );
-      } catch (error) {
-        console.error("Sending Email Error", error);
-        throw error;
+      console.log("ok");
+      setIsOkShowModal(true);
+    }
+  };
+
+  const handleFormSubmit = async () => {
+    const { blogName, domain, email, template, notionToken, notionId } =
+      formData;
+
+    //メール送信
+    try {
+      setSendingEmailLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            blogName,
+            domain,
+            email,
+            template,
+            notionToken,
+            notionId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        alert("お問い合わせに失敗しました。再度お確かめください。");
+        return null;
       }
-    } else {
+
+      //成功ページへリダイレクトさせる
+      router.push("/success-form-submit");
+    } catch (error) {
+      console.error("Sending Email Error", error);
+      throw error;
+    } finally {
+      setSendingEmailLoading(false);
+      setIsOkShowModal(false);
     }
   };
 
@@ -190,7 +301,7 @@ const CreateNotionBlogPage: React.FC = () => {
                 htmlFor="blogName"
                 className="block text-sm font-medium text-gray-700"
               >
-                ブログ名
+                ブログ名 (後から変更可)
               </label>
               <Input
                 id="blogName"
@@ -203,6 +314,26 @@ const CreateNotionBlogPage: React.FC = () => {
               {(touchedFields.has("blogName") || errors.blogName) &&
                 errors.blogName && (
                   <p className="mt-2 text-sm text-red-600">{errors.blogName}</p>
+                )}
+            </div>
+            <div>
+              <label
+                htmlFor="domain"
+                className="block text-sm font-medium text-gray-700"
+              >
+                ドメイン名
+              </label>
+              <Input
+                id="domain"
+                name="domain"
+                value={formData.domain}
+                onChange={handleChange}
+                placeholder="sample_blog"
+                className="mt-1"
+              />
+              {(touchedFields.has("domain") || errors.domain) &&
+                errors.domain && (
+                  <p className="mt-2 text-sm text-red-600">{errors.domain}</p>
                 )}
             </div>
             <div className="mt-4">
@@ -330,6 +461,12 @@ const CreateNotionBlogPage: React.FC = () => {
                     {errors.notionToken}
                   </p>
                 )}
+
+              {availableNotionTokenMessage && (
+                <p className="mt-2 text-sm text-green-600">
+                  {availableNotionTokenMessage}
+                </p>
+              )}
             </div>
             <div className="mt-4">
               <label
@@ -353,6 +490,11 @@ const CreateNotionBlogPage: React.FC = () => {
                 errors.notionId && (
                   <p className="mt-2 text-sm text-red-600">{errors.notionId}</p>
                 )}
+              {availableNotionIdMessage && (
+                <p className="mt-2 text-sm text-green-600">
+                  {availableNotionIdMessage}
+                </p>
+              )}
             </div>
           </>
         );
@@ -370,7 +512,7 @@ const CreateNotionBlogPage: React.FC = () => {
         </p>
       </div>
       <Progress value={(step / totalSteps) * 100} className="mb-6" />
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form className="space-y-6">
         {renderStep()}
         <div className="flex justify-between mt-6">
           {step > 1 && (
@@ -383,12 +525,71 @@ const CreateNotionBlogPage: React.FC = () => {
               次へ
             </Button>
           ) : (
-            <Button type="submit">申し込む</Button>
+            <Button type="button" onClick={handleConfirm}>
+              {isNotionDataCheckLoading ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "確認する"
+              )}
+            </Button>
           )}
         </div>
+        {isOkShowModal && (
+          <AlertDialog open={isOkShowModal}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>確認</AlertDialogTitle>
+                <AlertDialogDescription asChild>
+                  <div>
+                    この入力でよろしいですか？
+                    <div className="mt-4">
+                      <dl className="space-y-2 text-sm">
+                        {[
+                          { label: "ブログ名", value: formData.blogName },
+                          { label: "ドメイン名", value: formData.domain },
+                          { label: "メールアドレス", value: formData.email },
+                          { label: "テンプレート名", value: formData.template },
+                          {
+                            label: "NotionToken",
+                            value: formData.notionToken ? "********" : "未入力",
+                          },
+                          {
+                            label: "NotionId",
+                            value: formData.notionId || "未入力",
+                          },
+                        ].map(({ label, value }) => (
+                          <div key={label} className="flex items-center gap-4">
+                            <dt className="font-medium min-w-[120px]">
+                              ・{label}
+                            </dt>
+                            <dd>{value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                  </div>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setIsOkShowModal(false)}>
+                  キャンセル
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={() => handleFormSubmit()}>
+                  {sendingEmailLoading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    "申し込む"
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </form>
     </div>
   );
 };
 
 export default CreateNotionBlogPage;
+
+//127ef6b3de6b408880c046925f5917c6

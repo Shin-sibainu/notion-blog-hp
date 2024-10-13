@@ -82,6 +82,7 @@ const Feature = () => {
                 画像サムネイル追加も簡単
               </li>
             </ul>
+            
           </div>
           {/* right */}
           <div className="shadow-lg shadow-slate-300 border rounded-lg lg:w-3/5">
