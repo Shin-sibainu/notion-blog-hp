@@ -48,7 +48,7 @@ const CreateNotionBlogPage: React.FC = () => {
 
   const [formData, setFormData] = useState<FormData>({
     blogName: "ShinCode_Blog",
-    domain: "shincode_blog",
+    domain: "shincode-blog",
     email: "test@gmail.com",
     template: "Sleek Slate",
     notionToken: "secret_uc7RDVzbGbIxkyStI2swlJejlAUsnQrPdEBz5hnYdfd",
@@ -78,8 +78,11 @@ const CreateNotionBlogPage: React.FC = () => {
         if (value.trim().length === 0) error = "ブログ名は必須です";
         break;
       case "domain":
-        if (value.trim().length === 0)
+        // ドメイン名の正規表現（トップレベルドメインを除く）
+        const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/;
+        if (!domainRegex.test(value.trim())) {
           error = "有効なドメイン名を入力してください";
+        }
         break;
       case "email":
         if (!/\S+@\S+\.\S+/.test(value))
@@ -453,7 +456,15 @@ const CreateNotionBlogPage: React.FC = () => {
                 className="mt-1"
               />
               <p className="mt-1 text-sm text-gray-500">
-                あなたのNotionアカウントのアクセストークンを入力してください。
+                あなたのNotion Integration Tokenを入力してください。詳しくは
+                <Link
+                  href="/how-to-get-notion-key"
+                  className="text-blue-600 underline underline-offset-2"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  こちら
+                </Link>
               </p>
               {(touchedFields.has("notionToken") || errors.notionToken) &&
                 errors.notionToken && (
@@ -484,7 +495,15 @@ const CreateNotionBlogPage: React.FC = () => {
                 className="mt-1"
               />
               <p className="mt-1 text-sm text-gray-500">
-                ブログを作成するNotionページのIDを入力してください。
+                ブログを作成するNotion DatabaseのIDを入力してください。詳しくは
+                <Link
+                  href="/how-to-get-notion-key"
+                  className="text-blue-600 underline underline-offset-2"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  こちら
+                </Link>
               </p>
               {(touchedFields.has("notionId") || errors.notionId) &&
                 errors.notionId && (
