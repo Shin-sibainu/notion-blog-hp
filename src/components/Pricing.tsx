@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import SectionContainer from "./layouts/SectionContainer";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -10,6 +10,8 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Calendar } from "lucide-react";
 
 const PricingSection = () => {
   const [isAnnual, setIsAnnual] = useState(false);
@@ -23,7 +25,7 @@ const PricingSection = () => {
         "基本的なテンプレート",
         "メールサポート",
       ],
-      cta: "申し込む",
+      cta: "無料で始める",
     },
     {
       name: "スタンダードプラン",
@@ -34,7 +36,7 @@ const PricingSection = () => {
         "カスタムドメイン対応",
         "優先メールサポート",
       ],
-      cta: "申し込む",
+      cta: "無料で始める",
       recommended: true,
     },
     {
@@ -46,7 +48,7 @@ const PricingSection = () => {
         "パフォーマンス分析(月1回)",
         "個別カスタマイズ対応可能",
       ],
-      cta: "申し込む",
+      cta: "無料で始める",
     },
   ];
 
@@ -56,6 +58,14 @@ const PricingSection = () => {
       title="あなたのブログ成長に合わせた3つのプラン"
       description="初期費用0円ですぐに始められます。成長に応じて柔軟にアップグレード可能。"
     >
+      <Alert className="my-4 bg-blue-50 border-blue-200">
+        <Calendar className="h-4 w-4" />
+        <AlertTitle>1週間無料体験実施中！</AlertTitle>
+        <AlertDescription>
+          どのプランでも1週間無料でお試しいただけます。期間中はいつでもキャンセル可能です。最初にお支払いも必要はありません。
+        </AlertDescription>
+      </Alert>
+
       <div className="flex justify-center items-center space-x-4 my-6">
         <span className={`${isAnnual ? "text-gray-500" : "font-semibold"}`}>
           月払い
@@ -110,9 +120,12 @@ const PricingSection = () => {
       </div>
 
       <div className="mt-12 text-center">
-        <p className="text-gray-600">\ 初期費用0円キャンペーン実施中！ /</p>
+        <p className="text-gray-600">
+          \ 1週間無料体験＆初期費用0円キャンペーン実施中！ /
+        </p>
         <p className="mt-2 text-sm text-gray-500">
-          ※ 表示価格は全て税込みです。
+          ※
+          表示価格は全て税込みです。1週間の無料体験後、それ以降も利用したい場合は上記プランに沿ってお手続きいただきます。
         </p>
       </div>
     </SectionContainer>

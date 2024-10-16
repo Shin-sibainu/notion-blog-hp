@@ -20,7 +20,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">
           <Link href={"/create-notion-blog"}>
             <Button size={"lg"} className="w-full sm:w-auto">
-              はじめる
+              無料ではじめる
             </Button>
           </Link>
 

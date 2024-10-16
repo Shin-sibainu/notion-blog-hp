@@ -254,10 +254,10 @@ const CreateNotionBlogPage: React.FC = () => {
     const { blogName, domain, email, template, notionToken, notionId } =
       formData;
 
-    //メール送信
+    //メール送信＆NotionDBへ保存
     try {
       setSendingEmailLoading(true);
-      const response = await fetch(
+      const mailResponse = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/send`,
         {
           method: "POST",
@@ -275,9 +275,32 @@ const CreateNotionBlogPage: React.FC = () => {
         }
       );
 
-      if (!response.ok) {
+      if (!mailResponse.ok) {
         alert("お問い合わせに失敗しました。再度お確かめください。");
         return null;
+      }
+
+      //NotionDBへ保存
+      const notionDBResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/notion/db`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            blogName,
+            domain,
+            email,
+            template,
+            notionToken,
+            notionId,
+          }),
+        }
+      );
+
+      if (!notionDBResponse.ok) {
+        throw new Error(`HTTP error! status: ${notionDBResponse.status}`);
       }
 
       //成功ページへリダイレクトさせる
