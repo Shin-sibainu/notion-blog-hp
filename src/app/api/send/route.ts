@@ -7,7 +7,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { blogName, domain, email, template, notionToken, notionId } = body;
+    const { blogName, domain, email, template, price, notionToken, notionId } =
+      body;
 
     const { data, error } = await resend.emails.send({
       from: "NotionPress | Notionで簡単ブログ開発 <onboarding@resend.dev>",
@@ -20,6 +21,7 @@ export async function POST(req: Request) {
         domain,
         email,
         template,
+        price,
         notionToken,
         notionId,
       }),

@@ -4,16 +4,75 @@ import Header from "@/components/Header";
 import { Noto_Sans_JP } from "next/font/google";
 import Footer from "@/components/Footer";
 
+// サイトのデフォルト設定
+const siteName = "NotionPress";
+const description =
+  "NotionをブログにするためのWebサービス。専門知識不要で、あなたのNotionページを美しいブログに変換します。";
+const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+export const metadata: Metadata = {
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`, // 個別ページのタイトルテンプレート
+  },
+  description,
+  metadataBase: new URL(siteUrl),
+  // 基本設定
+  applicationName: siteName,
+  authors: [{ name: "ShinCode" }],
+  generator: "Next.js",
+  keywords: [
+    "Notion",
+    "ブログ",
+    "CMS",
+    "ホームページ",
+    "ウェブサイト",
+    "ブログ作成",
+  ],
+  // ロボット設定
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  // OGP設定
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    url: siteUrl,
+    siteName,
+    title: siteName,
+    description,
+    images: [
+      {
+        url: `${siteUrl}/ogp.png`, // OGP画像のパスを指定
+        width: 1200,
+        height: 630,
+        alt: siteName,
+      },
+    ],
+  },
+  // Twitter Card設定
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description,
+    images: [`${siteUrl}/ogp.png`], // Twitter用OGP画像
+    creator: "@Shin_Engineer", // Twitterアカウントがあれば指定
+  },
+};
+
 const notoSansJP = Noto_Sans_JP({
   weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
 });
-
-export const metadata: Metadata = {
-  title: "NotionPress",
-  description: "Notionブログ代行開発サービス",
-};
 
 export default function RootLayout({
   children,

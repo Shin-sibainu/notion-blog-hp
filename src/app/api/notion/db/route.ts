@@ -17,10 +17,13 @@ export async function POST(req: NextRequest) {
   try {
     const db = await initializeNotionDB();
 
-    const { blogName, domain, email, template, notionToken, notionId } = body;
-    await db
-      .from("notion-press-db")
-      .insert({ blogName, domain, email, template, notionToken, notionId });
+    const { blogName, domain, email, template } = body;
+    await db.from("notion-press-db").insert({
+      blogName,
+      domain,
+      email,
+      template,
+    });
 
     return NextResponse.json(
       { success: true, message: "Databases initialized successfully" },

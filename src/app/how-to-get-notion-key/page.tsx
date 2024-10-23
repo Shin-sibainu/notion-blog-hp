@@ -5,7 +5,7 @@ import React from "react";
 
 const HowToGetNotionKey = () => {
   return (
-    <div className="prose lg:prose-lg px-2 mx-auto">
+    <div className="prose lg:prose-xl px-2 mx-auto md:mb-10">
       <article>
         <div>
           <h2 className="text-xl lg:text-3xl lg:mt-2 underline underline-offset-4">

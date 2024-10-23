@@ -3,6 +3,7 @@ export const EmailTemplate = ({
   domain,
   email,
   template,
+  price,
   notionToken,
   notionId,
 }: {
@@ -10,6 +11,7 @@ export const EmailTemplate = ({
   domain: string;
   email: string;
   template: string;
+  price: string;
   notionToken: string;
   notionId: string;
 }) => (
@@ -49,6 +51,7 @@ export const EmailTemplate = ({
         <li>ドメイン: {domain}</li>
         <li>メールアドレス: {email}</li>
         <li>テンプレート: {template}</li>
+        <li>プラン: {price}</li>
         <li>NotionToken: {notionToken}</li>
         <li>NotionId: {notionId}</li>
       </ul>

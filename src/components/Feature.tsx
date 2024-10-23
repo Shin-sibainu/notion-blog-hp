@@ -2,6 +2,17 @@ import Image from "next/image";
 import SectionContainer from "./layouts/SectionContainer";
 
 const Feature = () => {
+  // 画像の統一サイズを定義
+  const IMAGE_DIMENSIONS = {
+    width: 920,
+    height: 630,
+    aspectRatio: "aspect-[920/630]",
+  };
+
+  // 共通の画像ラッパースタイル
+  const imageWrapperStyle =
+    "relative w-full shadow-lg shadow-slate-300 border rounded-lg overflow-hidden";
+
   return (
     <SectionContainer
       id="feature"
@@ -11,13 +22,15 @@ const Feature = () => {
       <div className="my-10 sm:my-20">
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
           {/* left */}
-          <div className="shadow-lg shadow-slate-300 border rounded-lg lg:w-3/5">
+          <div
+            className={`${imageWrapperStyle} lg:w-3/5 ${IMAGE_DIMENSIONS.aspectRatio}`}
+          >
             <Image
-              src={"/notion-press-template-sleek-slate.png"}
+              src="/notion-press-template-sleek-slate.png"
               alt="sample image"
-              width={920}
-              height={630}
-              className="rounded-lg"
+              fill
+              className="object-cover"
+              priority
             />
           </div>
           {/* right */}
@@ -82,16 +95,16 @@ const Feature = () => {
                 画像サムネイル追加も簡単
               </li>
             </ul>
-            
           </div>
           {/* right */}
-          <div className="shadow-lg shadow-slate-300 border rounded-lg lg:w-3/5">
+          <div
+            className={`${imageWrapperStyle} lg:w-3/5 ${IMAGE_DIMENSIONS.aspectRatio}`}
+          >
             <Image
-              src={"/notion-press-template-sleek-slate.png"}
+              src="/notion-press-cms-image-2.png"
               alt="sample image"
-              width={920}
-              height={630}
-              className="rounded-lg w-full h-auto"
+              fill
+              className="object-cover"
             />
           </div>
         </div>
@@ -100,13 +113,14 @@ const Feature = () => {
       <div className="my-10">
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
           {/* left */}
-          <div className="shadow-lg shadow-slate-300 border rounded-lg lg:w-3/5">
+          <div
+            className={`${imageWrapperStyle} lg:w-3/5 ${IMAGE_DIMENSIONS.aspectRatio}`}
+          >
             <Image
-              src={"/notion-press-template-sleek-slate.png"}
+              src="/notion-press-blog-performance-2.png"
               alt="SEO最適化とパフォーマンス向上のイメージ"
-              width={920}
-              height={630}
-              className="rounded-lg"
+              fill
+              className="object-cover"
             />
           </div>
           {/* right */}

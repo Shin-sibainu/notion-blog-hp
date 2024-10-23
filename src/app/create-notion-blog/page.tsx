@@ -36,12 +36,13 @@ interface FormData {
   domain: string;
   email: string;
   template: string;
+  price: string;
   notionToken: string;
   notionId: string;
 }
 
 const CreateNotionBlogPage: React.FC = () => {
-  const totalSteps = 3;
+  const totalSteps = 4;
 
   const [step, setStep] = useState(1);
   const router = useRouter();
@@ -51,6 +52,7 @@ const CreateNotionBlogPage: React.FC = () => {
     domain: "shincode-blog",
     email: "test@gmail.com",
     template: "Sleek Slate",
+    price: "", // 初期値を空文字列に設定
     notionToken: "secret_uc7RDVzbGbIxkyStI2swlJejlAUsnQrPdEBz5hnYdfd",
     notionId: "127ef6b3de6b408880c046925f5917c6",
     // 127ef6b3de6b408880c046925f5917c6
@@ -90,6 +92,9 @@ const CreateNotionBlogPage: React.FC = () => {
         break;
       case "template":
         if (value.trim().length === 0) error = "テンプレートを選択してください";
+        break;
+      case "price":
+        if (value.trim().length === 0) error = "価格プランを選択してください";
         break;
       case "notionToken":
         if (value.trim().length === 0) error = "NotionTokenは必須です";
@@ -176,6 +181,14 @@ const CreateNotionBlogPage: React.FC = () => {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  const handlePriceChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, price: value }));
+    setTouchedFields((prev) => new Set(prev).add("price"));
+
+    const error = validateField("price", value);
+    setErrors((prev) => ({ ...prev, price: error }));
+  };
+
   const handleTemplateChange = (value: string) => {
     setFormData((prev) => ({ ...prev, template: value }));
     setTouchedFields((prev) => new Set(prev).add("template"));
@@ -193,6 +206,9 @@ const CreateNotionBlogPage: React.FC = () => {
         break;
       case 2:
         fieldsToValidate = ["template"];
+        break;
+      case 3:
+        fieldsToValidate = ["price"];
         break;
     }
 
@@ -245,13 +261,12 @@ const CreateNotionBlogPage: React.FC = () => {
     setIsNotionDataCheckLoading(false);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("ok");
       setIsOkShowModal(true);
     }
   };
 
   const handleFormSubmit = async () => {
-    const { blogName, domain, email, template, notionToken, notionId } =
+    const { blogName, domain, email, template, price, notionToken, notionId } =
       formData;
 
     //メール送信＆NotionDBへ保存
@@ -269,6 +284,7 @@ const CreateNotionBlogPage: React.FC = () => {
             domain,
             email,
             template,
+            price: getPlanName(price) + `(${price}円/月)`,
             notionToken,
             notionId,
           }),
@@ -311,6 +327,19 @@ const CreateNotionBlogPage: React.FC = () => {
     } finally {
       setSendingEmailLoading(false);
       setIsOkShowModal(false);
+    }
+  };
+
+  const getPlanName = (price: string): string => {
+    switch (price) {
+      case "980":
+        return "ライトプラン";
+      case "1980":
+        return "スタンダードプラン";
+      case "4980":
+        return "プロプラン";
+      default:
+        return "未選択";
     }
   };
 
@@ -402,7 +431,7 @@ const CreateNotionBlogPage: React.FC = () => {
                 <div key={template.id}>
                   <label htmlFor={template.name} className="cursor-pointer">
                     <Card
-                      className={`overflow-hidden ${
+                      className={`overflow-hidden flex flex-col h-full transition-all duration-300 ${
                         formData.template === template.name
                           ? "ring-2 ring-blue-500"
                           : ""
@@ -461,6 +490,122 @@ const CreateNotionBlogPage: React.FC = () => {
           </div>
         );
       case 3:
+        return (
+          <div>
+            <label className="block text-2xl font-bold text-gray-700 mb-4">
+              価格プラン
+            </label>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <h3 className="text-lg font-semibold text-blue-700 mb-2">
+                1週間無料体験実施中！
+              </h3>
+              <p className="text-sm text-blue-600">
+                どのプランでも1週間無料でお試しいただけます。期間中はいつでもキャンセル可能で、最初の支払いは発生しません。
+              </p>
+            </div>
+
+            <RadioGroup
+              value={formData.price}
+              onValueChange={handlePriceChange}
+              className="grid md:grid-cols-3 gap-8"
+            >
+              {[
+                {
+                  name: "ライトプラン",
+                  price: 980,
+                  features: [
+                    "Notionデータベースでブログ管理",
+                    "基本的なテンプレート",
+                    "メールサポート",
+                  ],
+                },
+                {
+                  name: "スタンダードプラン",
+                  price: 1980,
+                  features: [
+                    "ライトプランの全機能",
+                    "全てのテンプレート選択可能",
+                    "カスタムドメイン対応",
+                    "優先メールサポート",
+                  ],
+                  recommended: true,
+                },
+                {
+                  name: "プロプラン",
+                  price: 4980,
+                  features: [
+                    "スタンダードプランの全機能",
+                    "Google Analytics 対応可能",
+                    "パフォーマンス分析(月1回)",
+                    "個別カスタマイズ対応可能",
+                  ],
+                },
+              ].map((plan) => (
+                <div key={plan.name} className="relative">
+                  {plan.recommended && (
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+                      一番人気！
+                    </div>
+                  )}
+                  <label htmlFor={plan.name} className="cursor-pointer">
+                    <Card
+                      className={`flex flex-col h-full transition-all duration-300 ${
+                        formData.price === plan.price.toString()
+                          ? "ring-2 ring-blue-500 shadow-lg"
+                          : plan.recommended
+                          ? "ring-2 ring-gray-300"
+                          : ""
+                      }`}
+                    >
+                      <CardHeader>
+                        <CardTitle className="text-xl font-bold">
+                          {plan.name}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex-grow">
+                        <div className="text-2xl font-bold mb-2">
+                          ¥{plan.price.toLocaleString()}
+                          <span className="text-base font-normal text-gray-500">
+                            /月
+                          </span>
+                        </div>
+                        <div className="text-sm text-blue-600 font-semibold mb-4">
+                          最初の1週間は無料！
+                        </div>
+                        <ul className="space-y-2">
+                          {plan.features.map((feature, featureIndex) => (
+                            <li
+                              key={featureIndex}
+                              className="flex items-center text-sm"
+                            >
+                              <span className="text-green-500 mr-2">✔</span>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </label>
+                  <RadioGroupItem
+                    value={plan.price.toString()}
+                    id={plan.name}
+                    className="sr-only"
+                  />
+                </div>
+              ))}
+            </RadioGroup>
+            {touchedFields.has("price") && errors.price && (
+              <p className="mt-2 text-sm text-red-600">{errors.price}</p>
+            )}
+            <div className="mt-8 text-center">
+              <p className="text-gray-600">
+                ※
+                表示価格は全て税込みです。1週間の無料体験後、選択したプランでのご利用となります。
+              </p>
+            </div>
+          </div>
+        );
+      case 4:
         return (
           <>
             <div>
@@ -591,6 +736,12 @@ const CreateNotionBlogPage: React.FC = () => {
                           { label: "ドメイン名", value: formData.domain },
                           { label: "メールアドレス", value: formData.email },
                           { label: "テンプレート名", value: formData.template },
+                          {
+                            label: "プラン",
+                            value:
+                              getPlanName(formData.price) +
+                              `(${formData.price}円/月)`,
+                          },
                           {
                             label: "NotionToken",
                             value: formData.notionToken ? "********" : "未入力",

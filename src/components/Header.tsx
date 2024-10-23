@@ -40,10 +40,10 @@ const Header = () => {
             料金
           </Link>
           <Link
-            href={"#price"}
+            href={"/how-to-write-notion-blog"}
             className="hover:text-muted-foreground/70 sm:text-sm pt-1"
           >
-            ブログの始め方
+            ブログの書き方
           </Link>
         </nav>
       </div>

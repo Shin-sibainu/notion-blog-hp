@@ -10,11 +10,17 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Calendar } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const PricingSection = () => {
+  const router = useRouter();
   const [isAnnual, setIsAnnual] = useState(false);
+
+  const handlePlanSelect = (planName: string) => {
+    router.push(
+      `/create-notion-blog?selectedPlan=${encodeURIComponent(planName)}`
+    );
+  };
 
   const pricingPlans = [
     {
@@ -58,15 +64,16 @@ const PricingSection = () => {
       title="あなたのブログ成長に合わせた3つのプラン"
       description="初期費用0円ですぐに始められます。成長に応じて柔軟にアップグレード可能。"
     >
-      <Alert className="my-4 bg-blue-50 border-blue-200">
-        <Calendar className="h-4 w-4" />
-        <AlertTitle>1週間無料体験実施中！</AlertTitle>
-        <AlertDescription>
-          どのプランでも1週間無料でお試しいただけます。期間中はいつでもキャンセル可能です。最初にお支払いも必要はありません。
-        </AlertDescription>
-      </Alert>
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 mt-4">
+        <h3 className="text-lg font-semibold text-blue-700 mb-2">
+          1週間無料体験実施中！
+        </h3>
+        <p className="text-sm text-blue-600">
+          どのプランでも1週間無料でお試しいただけます。期間中はいつでもキャンセル可能で、最初の支払いは発生しません。
+        </p>
+      </div>
 
-      <div className="flex justify-center items-center space-x-4 my-6">
+      <div className="flex justify-center items-center space-x-4 mb-8">
         <span className={`${isAnnual ? "text-gray-500" : "font-semibold"}`}>
           月払い
         </span>
@@ -77,55 +84,68 @@ const PricingSection = () => {
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
-        {pricingPlans.map((plan, index) => (
-          <Card
-            key={index}
-            className={`flex flex-col ${
-              plan.recommended ? "border-blue-500 border-2" : ""
-            }`}
-          >
-            <CardHeader>
-              <h3 className="text-2xl font-bold">{plan.name}</h3>
-              {plan.recommended && (
-                <span className="text-blue-500 font-semibold">人気No.1</span>
-              )}
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <div className="text-3xl font-bold mb-4">
-                ¥{plan.price.toLocaleString()}
-                <span className="text-lg font-normal text-gray-500">
-                  /{isAnnual ? "年" : "月"}
-                </span>
+        {pricingPlans.map((plan) => (
+          <div key={plan.name} className="relative">
+            {plan.recommended && (
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full z-10 shadow-sm">
+                一番人気！
               </div>
-              <ul className="space-y-2">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-center">
-                    <span className="text-green-500 mr-2">✔</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button
-                className={`w-full ${
-                  plan.recommended ? "bg-blue-500 hover:bg-blue-600" : ""
-                }`}
-              >
-                {plan.cta}
-              </Button>
-            </CardFooter>
-          </Card>
+            )}
+            <Card
+              className={`flex flex-col h-full transition-all duration-300 ${
+                plan.recommended ? "ring-2 ring-blue-100" : "hover:shadow-md"
+              }`}
+            >
+              <CardHeader className="pb-2">
+                <h3 className="text-xl font-bold text-center">{plan.name}</h3>
+              </CardHeader>
+              <CardContent className="flex-grow space-y-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold">
+                    ¥{plan.price.toLocaleString()}
+                    <span className="text-base font-normal text-gray-500">
+                      /{isAnnual ? "年" : "月"}
+                    </span>
+                  </div>
+                  <div className="text-sm text-blue-600 font-semibold mt-2">
+                    まずは1週間無料でお試し
+                  </div>
+                </div>
+                <div className="pt-4 border-t">
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li
+                        key={featureIndex}
+                        className="flex items-start text-sm gap-2"
+                      >
+                        <span className="text-green-500 flex-shrink-0 mt-1">
+                          ✔
+                        </span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+              <CardFooter className="pt-0">
+                <Button
+                  onClick={() => handlePlanSelect(plan.name)}
+                  className={`w-full ${
+                    plan.recommended ? "bg-blue-500 hover:bg-blue-600" : ""
+                  }`}
+                >
+                  {plan.cta}
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
         ))}
       </div>
 
-      <div className="mt-12 text-center">
-        <p className="text-gray-600">
-          \ 1週間無料体験＆初期費用0円キャンペーン実施中！ /
-        </p>
+      <div className="mt-8 text-center">
         <p className="mt-2 text-sm text-gray-500">
           ※
-          表示価格は全て税込みです。1週間の無料体験後、それ以降も利用したい場合は上記プランに沿ってお手続きいただきます。
+          表示価格は全て税込みです。1週間の無料体験後、選択したプランでのご利用となります。
         </p>
       </div>
     </SectionContainer>
