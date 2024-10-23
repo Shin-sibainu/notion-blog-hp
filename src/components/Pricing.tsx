@@ -2,15 +2,11 @@
 
 import React, { useState } from "react";
 import SectionContainer from "./layouts/SectionContainer";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+
 import { useRouter } from "next/navigation";
+import { Switch } from "./ui/switch";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
+import { Button } from "./ui/button";
 
 const PricingSection = () => {
   const router = useRouter();

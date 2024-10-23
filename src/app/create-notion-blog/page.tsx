@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Progress } from "../../components/ui/progress";
 import {
   Card,
   CardContent,
@@ -11,8 +11,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+} from "../../components/ui/card";
+import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
 
 import {
   AlertDialog,
