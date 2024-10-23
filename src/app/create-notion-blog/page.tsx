@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import { Progress } from "../../components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import {
   Card,
   CardContent,
@@ -11,8 +11,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../components/ui/card";
-import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
+} from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import {
   AlertDialog,
@@ -23,10 +23,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../../components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
 import Image from "next/image";
-import { templateData } from "../../components/Templates";
+import { templateData } from "@/components/Templates";
 import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";

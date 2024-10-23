@@ -4,9 +4,14 @@ import React, { useState } from "react";
 import SectionContainer from "./layouts/SectionContainer";
 
 import { useRouter } from "next/navigation";
-import { Switch } from "./ui/switch";
-import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
-import { Button } from "./ui/button";
+import { Switch } from "@/components/ui/switch";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const PricingSection = () => {
   const router = useRouter();

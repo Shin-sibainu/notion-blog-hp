@@ -1,4 +1,4 @@
-import NotionDuplicateButton from "../../components/NotionDuplicateButton";
+import NotionDuplicateButton from "@/components/NotionDuplicateButton";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
