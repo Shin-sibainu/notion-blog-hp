@@ -23,10 +23,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "../../components/ui/alert-dialog";
 
 import Image from "next/image";
-import { templateData } from "@/components/Templates";
+import { templateData } from "../../components/Templates";
 import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
