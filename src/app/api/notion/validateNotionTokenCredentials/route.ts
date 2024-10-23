@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest) {
   const response = await req.json();
 

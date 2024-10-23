@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import NotionDB from "notion-db-js";
 
+export const runtime = "edge";
+
 let notionDB: NotionDB | null = null;
 
 async function initializeNotionDB() {
