@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import { Noto_Sans_JP } from "next/font/google";
 import Footer from "@/components/Footer";
 
+//G-VWHG8ZY83M
+
 // サイトのデフォルト設定
 const siteName = "NotionPress";
 const description =
