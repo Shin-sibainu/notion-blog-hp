@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { Noto_Sans_JP } from "next/font/google";
 import Footer from "@/components/Footer";
 
-//G-VWHG8ZY83M
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 // サイトのデフォルト設定
 const siteName = "NotionPress";
@@ -92,6 +92,7 @@ export default function RootLayout({
           <Footer />
         </div>
       </body>
+      <GoogleAnalytics gaId="G-VWHG8ZY83M" />
     </html>
   );
 }
