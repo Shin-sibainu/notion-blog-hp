@@ -48,14 +48,13 @@ const CreateNotionBlogPage: React.FC = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState<FormData>({
-    blogName: "ShinCode_Blog",
-    domain: "shincode-blog",
-    email: "test@gmail.com",
-    template: "Sleek Slate",
-    price: "", // 初期値を空文字列に設定
-    notionToken: "secret_uc7RDVzbGbIxkyStI2swlJejlAUsnQrPdEBz5hnYdfd",
-    notionId: "127ef6b3de6b408880c046925f5917c6",
-    // 127ef6b3de6b408880c046925f5917c6
+    blogName: "", //ShinCode_Blog
+    domain: "", //shincode-blog
+    email: "", //test@gmail.com
+    template: "", //Sleek Slate
+    price: "",
+    notionToken: "", //secret_uc7RDVzbGbIxkyStI2swlJejlAUsnQrPdEBz5hnYdfd
+    notionId: "", // 127ef6b3de6b408880c046925f5917c6
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -309,6 +308,7 @@ const CreateNotionBlogPage: React.FC = () => {
             domain,
             email,
             template,
+            price,
             notionToken,
             notionId,
           }),
