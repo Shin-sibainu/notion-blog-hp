@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: `${siteUrl}/ogp.png`, // OGP画像のパスを指定
+        url: `${siteUrl}/opengraph-image.png`, // OGP画像のパスを指定
         width: 1200,
         height: 630,
         alt: siteName,
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteName,
     description,
-    images: [`${siteUrl}/ogp.png`], // Twitter用OGP画像
+    images: [`${siteUrl}/opengraph-image.png`], // Twitter用OGP画像
     creator: "@Shin_Engineer", // Twitterアカウントがあれば指定
   },
 };
