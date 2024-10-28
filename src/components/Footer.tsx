@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Twitter } from "lucide-react";
@@ -36,11 +37,14 @@ const Footer = () => {
               <Link href={"#templates"} className="text-sm hover:text-blue-600">
                 テンプレート
               </Link>
-              <Link href={""} className="text-sm hover:text-blue-600">
-                ブログの始め方
-              </Link>
-              <Link href={""} className="text-sm hover:text-blue-600">
+              <Link href={"#price"} className="text-sm hover:text-blue-600">
                 料金プラン
+              </Link>
+              <Link
+                href={"/how-to-write-notion-blog"}
+                className="text-sm hover:text-blue-600"
+              >
+                ブログの書き方
               </Link>
             </nav>
           </div>
@@ -48,16 +52,19 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">サポート</h3>
             <nav className="flex flex-col space-y-2">
-              <Link href={""} className="text-sm hover:text-blue-600">
+              <Link href="/questions" className="text-sm hover:text-blue-600">
                 よくある質問
               </Link>
-              <Link href={""} className="text-sm hover:text-blue-600">
+              <Link href="/contact" className="text-sm hover:text-blue-600">
                 お問い合わせ
               </Link>
-              <Link href={""} className="text-sm hover:text-blue-600">
+              <Link href="/terms" className="text-sm hover:text-blue-600">
                 利用規約
               </Link>
-              <Link href={""} className="text-sm hover:text-blue-600">
+              <Link
+                href="/privacy-policy"
+                className="text-sm hover:text-blue-600"
+              >
                 プライバシーポリシー
               </Link>
             </nav>
@@ -70,8 +77,10 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://x.com/Shin_Engineer"
                 className="text-gray-600 hover:text-blue-500 transition-colors"
+                target="_blank"
+                rel="noreferrer"
               >
                 <Twitter size={20} />
               </a>

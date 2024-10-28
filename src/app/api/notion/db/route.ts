@@ -19,8 +19,16 @@ export async function POST(req: NextRequest) {
   try {
     const db = await initializeNotionDB();
 
-    const { blogName, domain, email, template, price, notionToken, notionId } =
-      body;
+    const {
+      blogName,
+      domain,
+      email,
+      template,
+      price,
+      notionToken,
+      notionId,
+      createdAt,
+    } = body;
 
     await db.from("notion-press-db").insert({
       blogName,
@@ -30,6 +38,7 @@ export async function POST(req: NextRequest) {
       price,
       notionToken,
       notionId,
+      createdAt,
     });
 
     return NextResponse.json(

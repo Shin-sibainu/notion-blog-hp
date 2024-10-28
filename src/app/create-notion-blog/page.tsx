@@ -31,6 +31,8 @@ import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import emailjs from "@emailjs/browser";
+
 interface FormData {
   blogName: string;
   domain: string;
@@ -54,7 +56,7 @@ const CreateNotionBlogPage: React.FC = () => {
     template: "", //Sleek Slate
     price: "",
     notionToken: "", //secret_uc7RDVzbGbIxkyStI2swlJejlAUsnQrPdEBz5hnYdfd
-    notionId: "", // 127ef6b3de6b408880c046925f5917c6
+    notionId: "", //127ef6b3de6b408880c046925f5917c6
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -268,31 +270,71 @@ const CreateNotionBlogPage: React.FC = () => {
     const { blogName, domain, email, template, price, notionToken, notionId } =
       formData;
 
-    //メール送信＆NotionDBへ保存
+    // 現在の日付を取得して整形
+    const now = new Date();
+    const createdAt = now.toLocaleDateString("ja-JP", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    });
+
+    //メール送信(resend)
     try {
       setSendingEmailLoading(true);
-      const mailResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            blogName,
-            domain,
-            email,
-            template,
-            price: getPlanName(price) + `(${price}円/月)`,
-            notionToken,
-            notionId,
-          }),
-        }
-      );
+      // const mailResponse = await fetch(
+      //   `${process.env.NEXT_PUBLIC_BASE_URL}/api/send`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       blogName,
+      //       domain,
+      //       email,
+      //       template,
+      //       price: getPlanName(price) + `(${price}円/月)`,
+      //       notionToken,
+      //       notionId,
+      //       createdAt,
+      //     }),
+      //   }
+      // );
 
-      if (!mailResponse.ok) {
-        alert("お問い合わせに失敗しました。再度お確かめください。");
-        return null;
+      // if (!mailResponse.ok) {
+      //   alert("お問い合わせに失敗しました。再度お確かめください。");
+      //   return null;
+      // }
+
+      //EmailJsでメール送信
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      if (serviceId && templateId) {
+        await emailjs
+          .send(
+            serviceId,
+            templateId,
+            {
+              blogName,
+              domain,
+              email,
+              template,
+              price,
+              notionToken,
+              notionId,
+              createdAt,
+            },
+            { publicKey: publicKey }
+          )
+          .then(
+            () => console.log("SUCCESS!"),
+            (error) => {
+              console.log("FAILED...", error.text);
+            }
+          );
       }
 
       //NotionDBへ保存
@@ -311,6 +353,7 @@ const CreateNotionBlogPage: React.FC = () => {
             price,
             notionToken,
             notionId,
+            createdAt, // メールにも作成日を含める
           }),
         }
       );

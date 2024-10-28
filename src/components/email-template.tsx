@@ -6,6 +6,7 @@ export const EmailTemplate = ({
   price,
   notionToken,
   notionId,
+  createdAt,
 }: {
   blogName: string;
   domain: string;
@@ -14,6 +15,7 @@ export const EmailTemplate = ({
   price: string;
   notionToken: string;
   notionId: string;
+  createdAt: string;
 }) => (
   <div>
     <h1>Notionブログ申込み確認</h1>
@@ -54,6 +56,7 @@ export const EmailTemplate = ({
         <li>プラン: {price}</li>
         <li>NotionToken: {notionToken}</li>
         <li>NotionId: {notionId}</li>
+        <li>申し込み日: {createdAt}</li>
       </ul>
     </div>
   </div>

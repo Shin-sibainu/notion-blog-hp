@@ -40,7 +40,7 @@ const SuccessFormSubmit = () => {
           </li>
           <li className="flex items-center">
             <span className="text-blue-600 mr-2">✔</span>
-            Notionでブログ執筆の方法をこちらから確認しましょう。
+            Notionでブログの書き方を確認しましょう。
           </li>
           <li className="flex items-center">
             <span className="text-blue-600 mr-2">✔</span>

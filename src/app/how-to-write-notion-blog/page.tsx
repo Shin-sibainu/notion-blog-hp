@@ -37,7 +37,7 @@ const HowToWriteNotionBlogPage = () => {
           <p>書きはじめるには下記画像にある「新規」ボタンをクリックします。</p>
 
           <Image
-            src="/setup/notion-database-template-setup.png"
+            src="/how-to/notion-how-to-write-2.png"
             width={900}
             height={1000}
             alt="notion-press-step-2"
@@ -49,7 +49,7 @@ const HowToWriteNotionBlogPage = () => {
           </p>
 
           <Image
-            src="/setup/notion-database-template-setup.png"
+            src="/how-to/notion-how-to-write-3.png"
             width={900}
             height={1000}
             alt="notion-press-step-2"
@@ -58,23 +58,21 @@ const HowToWriteNotionBlogPage = () => {
         </div>
 
         <div>
-          <h3>記事執筆の方法</h3>
+          <h3>記事内容を修正したい場合</h3>
 
           <p>
             タイトルを決定した場所をホバーすると「開く」というボタンが出てくるのでクリックしてください。すると下画像が出てきます。
           </p>
 
           <Image
-            src="/setup/notion-database-template-setup.png"
+            src="/how-to/notion-how-to-write-4.png"
             width={900}
             height={1000}
             alt="notion-press-step-2"
             className="border shadow-md"
           />
 
-          <p>
-            あとは普段あなたがNotionを利用するように記事を執筆しましょう。これで簡単に記事作成ができました！
-          </p>
+          <p>これで簡単に記事内容の修正ができます。</p>
         </div>
 
         <div>
@@ -83,13 +81,14 @@ const HowToWriteNotionBlogPage = () => {
             記事の執筆が完了したら「Published」トグルにチェックを入れてください。
           </p>
           <Image
-            src="/setup/notion-database-template-setup.png"
+            src="/how-to/notion-how-to-write-5.png"
             width={900}
             height={1000}
             alt="notion-press-step-2"
             className="border shadow-md"
           />
-          そうすれば自動でブログのビルド(公開作業)が開始されます。<b>1~2分</b>
+          そうすれば自動でブログのビルド(公開作業)が開始されます。
+          <b>1~2分(これは場合によってはもっと長くかかります)</b>
           待っていただくとNotionブログに反映されますので、しばらく待ってからご確認ください。
           <p>
             どうしても分からない操作方法・ご質問があれば shincodeinc@gmail.com
